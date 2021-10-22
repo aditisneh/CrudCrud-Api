@@ -1,40 +1,88 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {Table} from 'react-bootstrap';
+import "./App.css";
 
-export default function App() {
+export default function List() {
   const [NewUnicorn, setNewUnicorn] = useState({
     name: "",
     age: "",
     colour: ""
   });
   const [Unicorns, setUnicorns] = useState([]);
+  const [singleUnicorn,setSingleUnicorn] = useState([]);
   useEffect(() => {
     axios
-      .get("https://crudcrud.com/api/3c4c9b8885c94c65814b6b144c0caa7a/unicorns")
+      .get("https://crudcrud.com/api/63d0b16c2a9a463bb0cbd975342e4832/unicorns")
       .then((res) => {
         console.log(res.data);
         setUnicorns(res.data);
       });
   }, []);
+
+  const onddlChange = (event)=>{
+    alert(event.target.value)
+     axios
+         .get("https://crudcrud.com/api/63d0b16c2a9a463bb0cbd975342e4832/unicorns/" +event.target.value)
+         .then((res) => setSingleUnicorn(res.data))
+         .then((error)=>console.log(error));
+   };
+
   return (
     <div className="App">
-      <select>
+      
+<select className="form-control col-md-3" onChange= {onddlChange} >
         {Unicorns.map((unicorn) => (
           <option key={unicorn._id}>{unicorn.name}</option>
         ))}
       </select>
+      
+      
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+          <td>Id</td>
+          <td>Name</td>
+          <td>Age</td>
+          <td>Color</td>
+          </tr>
+        </thead>
+            <tbody>
+              {
+              <tr>
+                <td>
+                  {singleUnicorn._id}
+                </td>
+                <td>
+                  {singleUnicorn.name}
+                </td>
+                <td>
+                  {singleUnicorn.age}
+                </td>
+                <td>
+                  {singleUnicorn.colour}
+                </td>
+              </tr>
+             }
+            </tbody>
+
+          
+        
+      </Table>  
+      
+      
       <form
         onSubmit={(e) => {
           e.preventDefault();
           axios
             .post(
-              "https://crudcrud.com/api/3c4c9b8885c94c65814b6b144c0caa7a/unicorns",
+              "https://crudcrud.com/api/63d0b16c2a9a463bb0cbd975342e4832/unicorns",
               NewUnicorn
             )
             .then(() => {
               axios
                 .get(
-                  "https://crudcrud.com/api/3c4c9b8885c94c65814b6b144c0caa7a/unicorns"
+                  "https://crudcrud.com/api/63d0b16c2a9a463bb0cbd975342e4832/unicorns"
                 )
                 .then((res) => {
                   console.log(res.data);
@@ -74,3 +122,5 @@ export default function App() {
     </div>
   );
 }
+
+
