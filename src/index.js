@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import AddItems from "./AddItems";
-import configureStore from "./store/configStore";
+import configureStore from "./store/configStore.js";
 
 const store = configureStore();
 
